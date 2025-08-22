@@ -44,6 +44,7 @@ public class Config {
                  &k - Random Symbols | &l - Bold
                  &m - Strikethrough  | &n - Underline
                  &o - Italic         | &r - Reset
+                 &g - Rainbow
                 -----------------------------------
                  #RRGGBB - Hex Color Codes (e.g. #ff00ff)
                 -----------------------------------

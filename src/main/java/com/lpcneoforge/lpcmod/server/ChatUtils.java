@@ -6,6 +6,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
+
 public final class ChatUtils {
 
   public static MutableComponent applyColorToLiteral(String text, String colorCode) {
@@ -66,16 +68,23 @@ public final class ChatUtils {
         if (formatting != null) {
           // Добавляем накопленный буфер
           if (!buffer.isEmpty()) {
-            component.append(Component.literal(buffer.toString()).withStyle(currentStyle));
+            if (currentStyle == null){
+              component.append(getRainbow(buffer.toString()));
+              currentStyle = Style.EMPTY;
+            }
+            else component.append(Component.literal(buffer.toString()).withStyle(currentStyle));
             buffer.setLength(0);
           }
-
-          if (formatting == ChatFormatting.RESET) {
-            currentStyle = Style.EMPTY;
-          } else if (formatting.isColor()) {
-            currentStyle = currentStyle.withColor(formatting.getColor());
+          if (formatCode == 'g') {
+            currentStyle = null;
           } else {
-            currentStyle = currentStyle.applyFormat(formatting);
+            if (formatting == ChatFormatting.RESET) {
+              currentStyle = Style.EMPTY;
+            } else if (formatting.isColor()) {
+              currentStyle = currentStyle.withColor(formatting.getColor());
+            } else {
+              currentStyle = currentStyle.applyFormat(formatting);
+            }
           }
 
           i++; // Пропускаем код форматирования
@@ -88,10 +97,21 @@ public final class ChatUtils {
 
     // Добавляем оставшийся текст
     if (!buffer.isEmpty()) {
-      component.append(Component.literal(buffer.toString()).withStyle(currentStyle));
+      if (currentStyle == null){
+        component.append(getRainbow(buffer.toString()));
+      }
+      else component.append(Component.literal(buffer.toString()).withStyle(currentStyle));
     }
 
     return component;
+  }
+
+  public static Component getRainbow(String text){
+    var cmp = MiniMessage.miniMessage().deserialize("<rainbow>" + text);
+    return net.minecraft.network.chat.ComponentSerialization.CODEC.decode(
+            net.minecraft.core.RegistryAccess.EMPTY.createSerializationContext(com.mojang.serialization.JsonOps.INSTANCE),
+            net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson().serializeToTree(cmp)
+      ).getOrThrow(IllegalArgumentException::new).getFirst();
   }
 
 

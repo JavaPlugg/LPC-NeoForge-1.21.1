@@ -79,7 +79,23 @@ configurations {
 
 dependencies {
     compileOnly 'net.luckperms:api:5.4'
-    implementation 'net.luckperms:api:5.4'
+    implementation 'net.kyori:adventure-text-minimessage:4.21.0'
+    implementation 'net.kyori:adventure-text-serializer-gson:4.21.0'
+    implementation 'net.kyori:examination-api:1.3.0'
+    implementation 'net.kyori:option:1.0.0'
+}
+
+jar {
+    // Включаем только MiniMessage и его обязательные зависимости
+    from {
+        configurations.runtimeClasspath
+                .filter { it.name.startsWith("adventure-") ||
+                it.name.startsWith("examination-") ||
+                it.name.startsWith("option")} // Основные библиотеки Kyori
+                .collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
