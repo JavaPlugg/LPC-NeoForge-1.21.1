@@ -8,13 +8,10 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 import static com.lpcneoforge.lpcmod.server.ChatUtils.parseFormattedText;
@@ -70,7 +67,7 @@ public class AchatCommand {
             user.data().remove(Node.builder("group.WCViewer").build());
             source.sendSuccess(() ->
                     parseFormattedText(String.format("&l&3[LPC] &r&fТеперь вы видите локальный чат в радиусе %d блоков",
-                    Config.LOCAL_RADIUS.get())), false);
+                            Config.LOCAL_RADIUS.get())), false);
         }
 
         LPCNeoForge.getLuckperms().getUserManager().saveUser(user);

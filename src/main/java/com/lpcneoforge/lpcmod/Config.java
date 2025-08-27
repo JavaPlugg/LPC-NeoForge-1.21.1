@@ -58,7 +58,4 @@ public class Config {
 
     SPEC = BUILDER.build();
   }
-
-  @SubscribeEvent
-  public static void onLoad(final ModConfigEvent event) {}
 }

@@ -90,8 +90,8 @@ jar {
     from {
         configurations.runtimeClasspath
                 .filter { it.name.startsWith("adventure-") ||
-                it.name.startsWith("examination-") ||
-                it.name.startsWith("option")} // Основные библиотеки Kyori
+                        it.name.startsWith("examination-") ||
+                        it.name.startsWith("option")} // Основные библиотеки Kyori
                 .collect { it.isDirectory() ? it : zipTree(it) }
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE

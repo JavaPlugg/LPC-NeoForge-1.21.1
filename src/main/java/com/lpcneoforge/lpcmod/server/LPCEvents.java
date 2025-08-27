@@ -157,20 +157,19 @@ public class LPCEvents {
       }
 
       User user = LPCNeoForge.getLuckperms().getUserManager().getUser(player.getUUID());
-      boolean isInWCViewer;
+      boolean isWCViewer;
 
-      if (user != null)isInWCViewer = user.getInheritedGroups(emptyOptions).contains(group);
-      else isInWCViewer = false;
+      if (user != null)isWCViewer = user.getInheritedGroups(emptyOptions).contains(group);
+      else isWCViewer = false;
 
-      if(isInWCViewer){
-        sendMessage(player, message, false);
-        continue;
-      }
-
-      if (!isGlobal.getFirst()){
-        if (player.level() != world)continue;
+      if (!isGlobal.getFirst()) {
         double distance = Math.sqrt(player.getOnPos().distSqr(isGlobal.getSecond()));
-        if (distance > Config.LOCAL_RADIUS.get())continue;
+        if (player.level() != world || distance > Config.LOCAL_RADIUS.get()) {
+          if (isWCViewer) {
+            sendMessage(player, Component.literal("§6[Spy]").append(message), false);
+          }
+          continue;
+        }
       }
       sendMessage(player, message, false);
     }

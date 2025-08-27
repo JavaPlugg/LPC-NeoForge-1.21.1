@@ -111,7 +111,7 @@ public final class ChatUtils {
     return net.minecraft.network.chat.ComponentSerialization.CODEC.decode(
             net.minecraft.core.RegistryAccess.EMPTY.createSerializationContext(com.mojang.serialization.JsonOps.INSTANCE),
             net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson().serializeToTree(cmp)
-      ).getOrThrow(IllegalArgumentException::new).getFirst();
+    ).getOrThrow(IllegalArgumentException::new).getFirst();
   }
 
 
