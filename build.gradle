@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '1.0.21'
+    id "com.gradleup.shadow" version '8.3.8'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -75,28 +76,36 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 configurations {
     runtimeClasspath.extendsFrom localRuntime
+    shade
+    implementation.extendsFrom(shade)
 }
 
 dependencies {
     compileOnly 'net.luckperms:api:5.4'
-    implementation 'net.kyori:adventure-text-minimessage:4.21.0'
-    implementation 'net.kyori:adventure-text-serializer-gson:4.21.0'
-    implementation 'net.kyori:examination-api:1.3.0'
-    implementation 'net.kyori:option:1.0.0'
-}
-
-jar {
-    // Включаем только MiniMessage и его обязательные зависимости
-    from {
-        configurations.runtimeClasspath
-                .filter { it.name.startsWith("adventure-") ||
-                        it.name.startsWith("examination-") ||
-                        it.name.startsWith("option")} // Основные библиотеки Kyori
-                .collect { it.isDirectory() ? it : zipTree(it) }
+    shade 'net.kyori:adventure-text-minimessage:4.21.0'
+    shade ('net.kyori:adventure-text-serializer-gson:4.21.0') {
+        exclude group: 'com.google.code.gson'
+        exclude module: 'adventure-bom'
+        exclude module: 'adventure-api'
     }
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
+    shade 'net.kyori:examination-api:1.3.0'
+    shade 'net.kyori:option:1.0.0'
 }
+
+shadowJar {
+    zip64 = true
+    archiveClassifier = ''
+    configurations = [project.configurations.shade]
+
+    relocate 'net.kyori', 'net.lpcmod.kyori'
+
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer.class) {
+        path = 'META-INF/services'
+    }
+}
+
+tasks.jar.enabled = false
+build.dependsOn shadowJar
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
