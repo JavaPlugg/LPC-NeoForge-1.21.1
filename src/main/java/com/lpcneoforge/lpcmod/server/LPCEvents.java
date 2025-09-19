@@ -59,7 +59,7 @@ public class LPCEvents {
             }
             Component killerName = killer.getName();
             Component deadPlayerName = deadPlayer.getName();
-            msg.append("%s был убит %s".formatted(deadPlayerName, killerName));
+            msg.append(deadPlayerName).append(" был убит ").append(killerName);
             serverPlayer.sendSystemMessage(msg);
         }
         event.setCanceled(true);
