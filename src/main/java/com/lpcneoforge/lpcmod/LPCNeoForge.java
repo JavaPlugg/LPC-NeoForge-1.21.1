@@ -1,6 +1,8 @@
 package com.lpcneoforge.lpcmod;
 
 import net.luckperms.api.LuckPermsProvider;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.level.GameRules;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
@@ -42,6 +44,8 @@ public final class LPCNeoForge {
             EventListenersInit.init(modEventBus);
             container.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         }
+
+
     }
 
     public static void registerCommands(RegisterCommandsEvent e) {
@@ -51,6 +55,11 @@ public final class LPCNeoForge {
     public static void OnServerStarting(ServerStartingEvent event) {
         luckPerms = LuckPermsProvider.get();
         LOGGER.info("LuckPerms has been loaded!");
+        MinecraftServer server = event.getServer();
+        server.getAllLevels().forEach(serverLevel ->
+                serverLevel.getGameRules().getRule(GameRules.RULE_SHOWDEATHMESSAGES).set(false, server)
+        );
+        LOGGER.info("Death messages have been disabled.");
     }
 
     public static void commonSetup(final FMLCommonSetupEvent ignoredEvent) {

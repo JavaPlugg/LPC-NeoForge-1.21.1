@@ -62,7 +62,6 @@ public class LPCEvents {
             msg.append(deadPlayerName).append(" был убит ").append(killerName);
             serverPlayer.sendSystemMessage(msg);
         }
-        event.setCanceled(true);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
