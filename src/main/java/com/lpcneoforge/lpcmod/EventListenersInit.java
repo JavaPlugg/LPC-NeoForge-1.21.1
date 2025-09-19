@@ -6,13 +6,15 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
 
 public final class EventListenersInit {
-  public static void init(IEventBus event) {
-    //Common NeoForge bus
-    NeoForge.EVENT_BUS.addListener(LPCEvents::ChatMessage);
-    NeoForge.EVENT_BUS.addListener(EventPriority.NORMAL, LPCNeoForge::OnServerStarting);
-    NeoForge.EVENT_BUS.addListener(LPCNeoForge::registerCommands);
 
-    //IModBusEvent events
-    event.addListener(LPCNeoForge::commonSetup);
-  }
+    public static void init(IEventBus event) {
+        //Common NeoForge bus
+        NeoForge.EVENT_BUS.addListener(LPCEvents::ChatMessage);
+        NeoForge.EVENT_BUS.addListener(LPCEvents::PlayerDeath);
+        NeoForge.EVENT_BUS.addListener(EventPriority.NORMAL, LPCNeoForge::OnServerStarting);
+        NeoForge.EVENT_BUS.addListener(LPCNeoForge::registerCommands);
+
+        //IModBusEvent events
+        event.addListener(LPCNeoForge::commonSetup);
+    }
 }
