@@ -126,8 +126,7 @@ public class LPCEventListener {
         }
 
         MutableComponent output = Component.literal("");
-        String raw_outputstring = config.getChatFormat().get();
-        for (String word : raw_outputstring.split("%")) {
+        for (String word : config.getChatFormat().get().split("%")) {
             word = word.toLowerCase();
             String toAppend = word;
 
@@ -156,10 +155,11 @@ public class LPCEventListener {
             }
         }
 
+        Vec3 senderPosition = isGlobal ? null : player.position();
         MutableComponent newMessage = output.copy();
         player.server.execute(() -> {
             LPCNeoForge.LOGGER.info(newMessage.getString());
-            broadcastMessage(player.level(), newMessage, player.position());
+            broadcastMessage(player.level(), newMessage, senderPosition);
         });
     }
 
@@ -181,10 +181,16 @@ public class LPCEventListener {
             }
 
             User user = luckperms.getUserManager().getUser(player.getUUID());
-            boolean isWCViewer;
+            boolean isWCViewer = false;
+            if (user != null) {
+                isWCViewer = user.getInheritedGroups(emptyOptions).contains(group);
+            }
 
-            if (user != null) isWCViewer = user.getInheritedGroups(emptyOptions).contains(group);
-            else isWCViewer = false;
+            boolean isGlobal = senderPosition == null;
+            if (isGlobal) {
+                sendMessage(player, message);
+                continue;
+            }
 
             @SuppressWarnings("resource")
             Level level = player.level();
