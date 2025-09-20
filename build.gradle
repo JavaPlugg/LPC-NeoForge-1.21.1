@@ -81,6 +81,8 @@ configurations {
 }
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
     compileOnly 'net.luckperms:api:5.4'
     shade 'net.kyori:adventure-text-minimessage:4.21.0'
     shade ('net.kyori:adventure-text-serializer-gson:4.21.0') {

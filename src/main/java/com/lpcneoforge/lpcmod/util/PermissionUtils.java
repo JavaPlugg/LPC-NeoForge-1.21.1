@@ -1,4 +1,4 @@
-package com.lpcneoforge.lpcmod.server;
+package com.lpcneoforge.lpcmod.util;
 
 import net.luckperms.api.LuckPermsProvider;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +20,6 @@ public class PermissionUtils {
                 return false;
             }
         }
-
         return user.getCachedData().getPermissionData().checkPermission(perm).asBoolean();
     }
 }
