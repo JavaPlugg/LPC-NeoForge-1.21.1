@@ -89,7 +89,7 @@ public class LPCEventListener {
                 continue;
             }
             if (canSpy && !closeEnough) {
-                msg.append(Component.literal("§6[Spy]"));
+                msg.append(Component.literal(config.getPrefixSpy().get()));
             }
             msg.append(getVanillaDeathMessage(deadPlayer));
             serverPlayer.sendSystemMessage(msg);
@@ -148,7 +148,7 @@ public class LPCEventListener {
                 continue;
             }
             if (word.equalsIgnoreCase("typemessage")) {
-                toAppend = onlyGlobalChat ? "" : (isGlobal ? "[Г]" : "[Л]");
+                toAppend = onlyGlobalChat ? "" : (isGlobal ? config.getPrefixGlobal().get() : config.getPrefixLocal().get());
             }
             if (toAppend != null) {
                 output.append(ChatUtils.parseFormattedText(toAppend));
@@ -172,7 +172,7 @@ public class LPCEventListener {
 
         LuckPerms luckperms = LuckPermsProvider.get();
         QueryOptions emptyOptions = luckperms.getContextManager().getStaticQueryOptions();
-        Group group = luckperms.getGroupManager().getGroup("WCViewer");
+        Group group = luckperms.getGroupManager().getGroup(config.getSpyGroup().get());
 
         for (Player player : server.getPlayerList().getPlayers()) {
             if (onlyGlobalChat) {
@@ -204,7 +204,7 @@ public class LPCEventListener {
             }
 
             if (isWCViewer) {
-                sendMessage(player, Component.literal("§6[Spy]").append(message));
+                sendMessage(player, Component.literal(config.getPrefixSpy().get()).append(message));
             }
         }
     }

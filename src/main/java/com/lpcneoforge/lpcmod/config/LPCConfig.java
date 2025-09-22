@@ -44,6 +44,10 @@ public class LPCConfig {
             """;
 
     private final ModConfigSpec.ConfigValue<String> chatFormat;
+    private final ModConfigSpec.ConfigValue<String> prefixLocal;
+    private final ModConfigSpec.ConfigValue<String> prefixGlobal;
+    private final ModConfigSpec.ConfigValue<String> prefixSpy;
+    private final ModConfigSpec.ConfigValue<String> spyGroup;
     private final ModConfigSpec.ConfigValue<Integer> localRadius;
     private final ModConfigSpec.ConfigValue<Integer> deathRadius;
     private final ModConfigSpec spec;
@@ -56,11 +60,24 @@ public class LPCConfig {
         chatFormat = builder.comment("Chat format string with placeholders.")
                 .define("chatFormat", "%typemessage%%prefix%%username%%suffix%: %chatmessage%");
 
+        prefixLocal = builder.comment("Prefix for local chat messages")
+                .define("prefixLocal", "[Л]");
+
+        prefixGlobal = builder.comment("Prefix for global chat messages")
+                .define("prefixGlobal", "[Г]");
+
+        prefixSpy = builder.comment("Prefix for spying")
+                .define("prefixSpy", "§6[Spy]");
+
+        spyGroup = builder.comment("Group able to spy")
+                .define("spyGroup", "WCViewer");
+
         localRadius = builder.comment("Radius for local messages.")
                 .define("localRadius", 300);
 
         deathRadius = builder.comment("Radius for death messages.")
                 .define("deathRadius", 300);
+
         spec = builder.build();
     }
 }
