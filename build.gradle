@@ -76,8 +76,6 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 configurations {
     runtimeClasspath.extendsFrom localRuntime
-    shade
-    implementation.extendsFrom(shade)
 }
 
 dependencies {

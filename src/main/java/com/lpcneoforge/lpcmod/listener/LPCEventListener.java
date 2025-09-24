@@ -84,7 +84,9 @@ public class LPCEventListener {
         for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
             MutableComponent msg = Component.literal("");
             boolean canSpy = PermissionUtils.checkPermission(serverPlayer, "chat.spy");
-            boolean closeEnough = serverPlayer.position().closerThan(deadPlayer.position(), config.getDeathRadius().get());
+            @SuppressWarnings("resource")
+            boolean closeEnough = serverPlayer.position().closerThan(deadPlayer.position(), config.getDeathRadius().get())
+                    && serverPlayer.level().dimension() == deadPlayer.level().dimension();
             if (!canSpy && !closeEnough) {
                 continue;
             }
